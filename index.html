@@ -3167,40 +3167,62 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
             if (productDivs.length > 0) {
               productDivs.forEach((productDiv, index) => {
                 const computedStyle = getComputedStyle(productDiv);
-                const bgImage = computedStyle.backgroundImage;
+                const bgImageRaw = computedStyle.backgroundImage; // e.g., url("https://...")
+
+                // Extract URL from `url("...")`
+                const match = bgImageRaw.match(/url\("?(.*?)"?\)/);
+                const bgImage = match ? match[1] : null;
+
+                if (!bgImage) {
+                  console.warn(
+                    `⚠️ Could not extract background-image for element #${
+                      index + 1
+                    }`
+                  );
+                  return;
+                }
+
+                let newImageUrl = null;
+
                 switch (bgImage) {
                   case "https://img1.wsimg.com/isteam/ip/f78f8035-78bc-4717-863a-aadc9a5223cc/25.png":
-                    bgImage =
+                    newImageUrl =
                       "https://raw.githubusercontent.com/Lars0914/rabusstoreimages/main/assets/photo_2025-08-04_02-02-48.jpg";
-
+                    break;
                   case "https://img1.wsimg.com/isteam/ip/f78f8035-78bc-4717-863a-aadc9a5223cc/1745302681437-3726a352-8056-464e-8de8--ea7c347.jpg":
-                    bgImage =
+                    newImageUrl =
                       "https://raw.githubusercontent.com/Lars0914/rabusstoreimages/main/assets/photo_2025-08-04_02-02-59.jpg";
-
+                    break;
                   case "https://img1.wsimg.com/isteam/ip/f78f8035-78bc-4717-863a-aadc9a5223cc/1-dccf91d.jpeg":
-                    bgImage =
+                    newImageUrl =
                       "https://raw.githubusercontent.com/Lars0914/rabusstoreimages/main/assets/photo_2025-08-04_02-03-07.jpg";
-
+                    break;
                   case "https://img1.wsimg.com/isteam/ip/f78f8035-78bc-4717-863a-aadc9a5223cc/1745303119320-1e8739ef-ccc3-4586-bc3e-e0041a7d.jpg":
-                    bgImage =
+                    newImageUrl =
                       "https://raw.githubusercontent.com/Lars0914/rabusstoreimages/main/assets/photo_2025-08-04_02-03-07.jpg";
-
+                    break;
                   case "https://img1.wsimg.com/isteam/ip/f78f8035-78bc-4717-863a-aadc9a5223cc/1745303105132-6c68871a-5c69-4bd5-9c84-8c10247c.jpg":
-                    bgImage =
+                    newImageUrl =
                       "https://raw.githubusercontent.com/Lars0914/rabusstoreimages/main/assets/photo_2025-08-04_02-02-57.jpg";
-
+                    break;
                   case "https://img1.wsimg.com/isteam/ip/f78f8035-78bc-4717-863a-aadc9a5223cc/1745303003713-26e7c7eb-cc6c-41b0-bacb--536d627.jpg":
-                    bgImage =
+                    newImageUrl =
                       "https://raw.githubusercontent.com/Lars0914/rabusstoreimages/main/assets/photo_2025-08-04_02-03-07.jpg";
-
+                    break;
                   case "https://img1.wsimg.com/isteam/ip/f78f8035-78bc-4717-863a-aadc9a5223cc/1-cc83783.jpeg":
-                    bgImage =
+                    newImageUrl =
                       "https://raw.githubusercontent.com/Lars0914/rabusstoreimages/main/assets/photo_2025-08-04_02-02-59.jpg";
+                    break;
+                }
+
+                if (newImageUrl) {
+                  productDiv.style.backgroundImage = `url("${newImageUrl}")`;
+                  console.log(`🔁 Updated image for product #${index + 1}`);
                 }
               });
             } else {
-              console.warn("⚠️ No product image divs found.");
-               location.reload(); // Refresh the page
+              console.warn("⚠️ No product image divs found. Reloading...");
+              location.reload(); // Refresh the page
             }
           }, 2000); // 2 seconds
         });
