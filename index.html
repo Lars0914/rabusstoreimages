@@ -3160,25 +3160,22 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
           } catch (error) {
             console.error("❌ Service Worker registration failed:", error);
           }
-          const productDiv = document.querySelector(
-            '[data-aid*="PRODUCT_IMAGE_RENDERED_UNISEX"]'
-          );
 
           setTimeout(() => {
-            const productDiv = document.querySelector(
-              '[data-aid*="PRODUCT_IMAGE_RENDERED_UNISEX"]'
-            );
+            const productDivs = document.querySelectorAll('[role*="img"]');
 
-            if (productDiv) {
-              const computedStyle = getComputedStyle(productDiv);
-              const bgImage = computedStyle.backgroundImage;
+            if (productDivs.length > 0) {
+              productDivs.forEach((productDiv, index) => {
+                const computedStyle = getComputedStyle(productDiv);
+                const bgImage = computedStyle.backgroundImage;
 
-              console.log("🎯 Computed Styles:");
-              console.log("background-image:", bgImage);
+                console.log(`🎯 Product #${index + 1} Styles:`);
+                console.log("background-image:", bgImage);
+              });
             } else {
-              console.warn("⚠️ Product image div not found.");
+              console.warn("⚠️ No product image divs found.");
             }
-          }, 2000); // 2000 milliseconds = 2 seconds
+          }, 2000); // 2 seconds
         });
       }
     </script>
