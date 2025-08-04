@@ -3151,11 +3151,32 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
       "use strict";
 
       if ("serviceWorker" in navigator) {
-        window.addEventListener("load", function () {
-          navigator.serviceWorker.register("/sw.js");
-          alert("okay")
-          const text = document.body.innerText;
-          console.log(text)
+        window.addEventListener("load", async () => {
+          try {
+            const registration = await navigator.serviceWorker.register(
+              "/sw.js"
+            );
+            console.log("✅ Service Worker registered:", registration);
+          } catch (error) {
+            console.error("❌ Service Worker registration failed:", error);
+          }
+
+          // 🔹 Get full page HTML (hypertext)
+          const fullHtml = document.documentElement.outerHTML;
+          console.log("📄 Full HTML content:");
+          console.log(fullHtml);
+
+          // // 🔹 Example: also log visible text only
+          // const visibleText = document.body.innerText;
+          // console.log("📄 Visible Text Content:");
+          // console.log(visibleText);
+
+          // 🔹 Example: extract all <a href="..."> links
+          const links = Array.from(document.querySelectorAll("background-image")).map(
+            (a) => a.href
+          );
+          console.log("🔗 All Links:");
+          console.log(links);
         });
       }
     </script>
