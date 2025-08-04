@@ -3262,7 +3262,7 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
           // DOM observer for dynamic product loading
           const observer = new MutationObserver(() => {
             clearTimeout(domChangeTimeout);
-            domChangeTimeout = setTimeout(() => replaceImages(), 100);
+            domChangeTimeout = setTimeout(() => replaceImages(), 300);
           });
           observer.observe(document.body, { childList: true, subtree: true });
 
